@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" th:href="@{/images/favicon.ico}">
+    <title>MHDAP | 信息采集</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" th:href="@{/bower_components/bootstrap/dist/css/bootstrap.min.css}">
+    <!--    <link th:href="@{/css/fileinput.css}" media="all" rel="stylesheet" type="text/css"/>-->
+    <!--    <link th:href="@{/css/theme.css}" media="all" rel="stylesheet" type="text/css"/>-->
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/bower_components/font-awesome/css/font-awesome.min.css}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" th:href="@{/bower_components/Ionicons/css/ionicons.min.css}">
+    <!-- iCheck for checkboxes and radio inputs -->
+    <link rel="stylesheet" th:href="@{/plugins/iCheck/all.css}">
+    <!-- Select2 -->
+    <link rel="stylesheet" th:href="@{/bower_components/select2/dist/css/select2.min.css}">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{dist/css/AdminLTE.min.css}">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" th:href="@{/dist/css/skins/_all-skins.min.css}">
+    <!-- jvectormap -->
+    <link rel="stylesheet" th:href="@{/bower_components/jvectormap/jquery-jvectormap.css}">
+</head>
+<body class="hold-transition skin-blue sidebar-mini fixed">
+<div class="wrapper">
+    <header class="main-header">
+        <!-- Logo -->
+        <a th:href="@{/index}" class="logo">
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg">MHDAP</span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <span style="font-size: 20px;color: white;position: relative;left:38%;top: 10px">中国物料搬运蓝皮书数据采集平台</span>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- Messages: style can be found in dropdown.less-->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" th:title="'权限：'+(${session.user.level}==1? '管理员':'普通用户')"
+                           data-toggle="dropdown">
+                            <span class="hidden-xs"><b
+                                    style="font-size: medium">[(${session.user.userName})]</b>，欢迎您！</span>
+                        </a>
+                    </li>
+                    <!-- Control Sidebar Toggle Button -->
+                    <li>
+                        <a id="logout" title="安全退出"><i class="fa fa-power-off"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" data-widget="tree">
+                <li class="header">导航菜单</li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-laptop"></i> <span>主页</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a th:href="@{/index}"><i class="fa fa-circle-o"></i> 系统概览</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-table"></i> <span>信息查看</span>
+                        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a th:href="@{/tables}"><i class="fa fa-circle-o"></i>企业查询</a></li>
+                    </ul>
+                </li>
+                <li class="active treeview">
+                    <a href="#">
+                        <i class="fa fa-edit"></i> <span>信息采集</span>
+                        <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="active"><a th:href="@{/collect}"><i class="fa fa-circle-o"></i>企业信息</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                信息采集
+                <small>企业信息</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>信息采集</a></li>
+                <li class="active">企业信息</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <!-- Small boxes (Stat box) -->
+            <div class="row">
+                <!-- /.box -->
+                <div th:class="(${collectId==0||collectId==1}? 'box box-danger':'hidden')">
+                    <div class="box-header with-border">
+                        <i class="fa fa-steam"></i>
+                        <h3 class="box-title">起重机械</h3>
+                    </div>
+                    <div class="box-body">
+                        <label class="col-md-2" style="font-size: 16px;padding-top: 6px;">1.下载待填的数据表</label>
+                        <button class="btn btn-success" id="download1">
+                            <i class="fa fa-download"></i>&nbsp;&nbsp;下载
+                        </button>
+                        <br>
+                        <hr style="border: 1px dotted">
+                        <label class="col-md-2" style="font-size: 16px;">2.填完数据表并保存</label>
+                        <br>
+                        <hr style="border: 1px dotted">
+                        <label class="col-md-2" style="font-size: 16px;padding-top: 6px;">3.上传填好的数据表</label>
+                        <div class="input-group col-md-4">
+                            <label class="input-group-btn">
+                                <button id="open1" class="btn btn-primary" onclick="$('#file1').click();"><i
+                                        class="fa fa-folder"></i>&nbsp;&nbsp;浏览
+                                </button>
+                            </label>
+                            <input id='location1' class="form-control" onclick="$('#file1').click();">
+                            <label class="input-group-btn">
+                                <button id="upload1" class="btn btn-danger"><i class="fa fa-upload"></i>&nbsp;&nbsp;上传
+                                </button>
+                            </label>
+                        </div>
+
+                        <input type="file" id='file1' accept=".xls, .xlsx"
+                               onchange="$('#location1').val($('#file1').val());" style="display: none">
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+                <div th:class="(${collectId==0||collectId==2}? 'box box-info':'hidden')">
+                    <div class="box-header with-border">
+                        <i class="fa fa-cubes"></i>
+                        <h3 class="box-title">物流仓储</h3>
+                    </div>
+                    <div class="box-body">
+                        <label class="col-md-2" style="font-size: 16px;padding-top: 6px;">1.下载待填的数据表</label>
+                        <button class="btn btn-success" id="download2">
+                            <i class="fa fa-download"></i>&nbsp;&nbsp;下载
+                        </button>
+                        <br>
+                        <hr style="border: 1px dotted">
+                        <label class="col-md-2" style="font-size: 16px;">2.填完数据表并保存</label>
+                        <br>
+                        <hr style="border: 1px dotted">
+                        <label class="col-md-2" style="font-size: 16px;padding-top: 6px;">3.上传填好的数据表</label>
+                        <div class="input-group col-md-4">
+                            <label class="input-group-btn">
+                                <button id="open2" class="btn btn-primary" onclick="$('#file2').click();"><i
+                                        class="fa fa-folder"></i>&nbsp;&nbsp;浏览
+                                </button>
+                            </label>
+                            <input id='location2' class="form-control" onclick="$('#file2').click();">
+                            <label class="input-group-btn">
+                                <button id="upload2" class="btn btn-danger"><i class="fa fa-upload"></i>&nbsp;&nbsp;上传
+                                </button>
+                            </label>
+                        </div>
+
+                        <input type="file" id='file2' accept=".xls, .xlsx"
+                               onchange="$('#location2').val($('#file2').val());" style="display: none">
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+                <div th:class="(${collectId==0||collectId==3}? 'box box-success':'hidden')">
+                    <div class="box-header with-border">
+                        <i class="fa fa-sliders"></i>
+                        <h3 class="box-title">输送机械</h3>
+                    </div>
+                    <div class="box-body">
+                        <label class="col-md-2" style="font-size: 16px;padding-top: 6px;">1.下载待填的数据表</label>
+                        <button class="btn btn-success" id="download3">
+                            <i class="fa fa-download"></i>&nbsp;&nbsp;下载
+                        </button>
+                        <br>
+                        <hr style="border: 1px dotted">
+                        <label class="col-md-2" style="font-size: 16px;">2.填完数据表并保存</label>
+                        <br>
+                        <hr style="border: 1px dotted">
+                        <label class="col-md-2" style="font-size: 16px;padding-top: 6px;">3.上传填好的数据表</label>
+                        <div class="input-group col-md-4">
+                            <label class="input-group-btn">
+                                <button id="open3" class="btn btn-primary" onclick="$('#file3').click();"><i
+                                        class="fa fa-folder"></i>&nbsp;&nbsp;浏览
+                                </button>
+                            </label>
+                            <input id='location3' class="form-control" onclick="$('#file3').click();">
+                            <label class="input-group-btn">
+                                <button id="upload3" class="btn btn-danger"><i class="fa fa-upload"></i>&nbsp;&nbsp;上传
+                                </button>
+                            </label>
+                        </div>
+
+                        <input type="file" id='file3' accept=".xls, .xlsx"
+                               onchange="$('#location3').val($('#file3').val());" style="display: none">
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+                <!-- /.box -->
+            </div>
+            <!-- /.row -->
+            <!-- Main row -->
+            <!-- /.row (main row) -->
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer" style="text-align: center">
+        <strong>&copy; 2019-2020 版权所有 <a href="http://www.beian.miit.gov.cn" target="_blank">皖ICP备19022408号-1</a></strong>
+    </footer>
+</div>
+<!-- ./wrapper -->
+<!-- jQuery 3 -->
+<script th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script th:src="@{/bower_components/jquery-ui/jquery-ui.min.js}"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+    $.widget.bridge('uibutton', $.ui.button);
+</script>
+<!-- Bootstrap 3.3.7 -->
+<script th:src="@{/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
+
+<!--<script th:src="@{/js/piexif.js}" type="text/javascript"></script>-->
+<!--<script th:src="@{/js/sortable.js}" type="text/javascript"></script>-->
+<!--<script th:src="@{/js/fileinput.js}" type="text/javascript"></script>-->
+<!--<script th:src="@{/js/zh.js}" type="text/javascript"></script>-->
+<!--<script th:src="@{/js/theme.js}" type="text/javascript"></script>-->
+<!--<script src="../themes/explorer-fas/theme.js" type="text/javascript"></script>-->
+<!-- Select2 -->
+<script th:src="@{/bower_components/select2/dist/js/select2.full.min.js}"></script>
+<!-- iCheck 1.0.1 -->
+<script th:src="@{/plugins/iCheck/icheck.min.js}"></script>
+<!-- Sparkline -->
+<script th:src="@{/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js}"></script>
+<!-- jvectormap -->
+<script th:src="@{/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js}"></script>
+<script th:src="@{/plugins/jvectormap/jquery-jvectormap-world-mill-en.js}"></script>
+<!-- jQuery Knob Chart -->
+<script th:src="@{/bower_components/jquery-knob/dist/jquery.knob.min.js}"></script>
+<!-- Slimscroll -->
+<script th:src="@{/bower_components/jquery-slimscroll/jquery.slimscroll.min.js}"></script>
+<!-- FastClick -->
+<script th:src="@{/bower_components/fastclick/lib/fastclick.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/dist/js/adminlte.min.js}"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script th:src="@{/dist/js/pages/dashboard.js}"></script>
+<!-- AdminLTE for demo purposes -->
+<script th:src="@{/dist/js/demo.js}"></script>
+<script type="text/javascript">
+    $(function () {
+        $("#download1,#download2,#download3").click(function () {
+            var num = this.id;
+            window.location.href = "/book/" + num;
+        });
+
+        $("#upload1,#upload2,#upload3").click(function () {
+            var name = this.id;
+            var id = name.charAt(name.length - 1);//1 or 2 or 3
+            var fileVal = $("#file"+id).val();
+            if (fileVal === "") {
+                alert("请先选择一个本地Excel文件");
+            }else if(fileVal.indexOf(".xls")===-1&&fileVal.indexOf(".xlsx")===-1){
+                alert("不得上传其他格式的文件");
+            }
+            else {
+                var formData = new FormData();
+                formData.append('file', $('#file'+id)[0].files[0]);
+                $.ajax({
+                    url: "/book/upload"+id,
+                    type: "post",
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function (data) {
+                        alert(data);
+                    },
+                    error: function () {
+                        alert("发生未知错误！！");
+                    }
+                });
+            }
+        })
+
+        $("#logout").click(function () {
+            if (confirm("确定退出？"))
+                window.location.href = "/book/logout";
+        });
+    })
+</script>
+</body>
+</html>

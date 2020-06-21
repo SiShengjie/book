@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" th:href="@{/images/favicon.ico}">
+    <title>MHDAP | 系统概览</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" th:href="@{/bower_components/bootstrap/dist/css/bootstrap.min.css}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/bower_components/font-awesome/css/font-awesome.min.css}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" th:href="@{/bower_components/Ionicons/css/ionicons.min.css}">
+    <!-- Morris charts -->
+    <link rel="stylesheet" th:href="@{/bower_components/morris.js/morris.css}">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{dist/css/AdminLTE.min.css}">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" th:href="@{/dist/css/skins/_all-skins.min.css}">
+    <!-- jvectormap -->
+    <link rel="stylesheet" th:href="@{/bower_components/jvectormap/jquery-jvectormap.css}">
+    <!-- Date Picker -->
+</head>
+<body class="hold-transition skin-blue sidebar-mini fixed">
+<div class="wrapper">
+    <header class="main-header">
+        <!-- Logo -->
+        <a th:href="@{/index}" class="logo">
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg">MHDAP</span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <span style="font-size: 20px;color: white;position: relative;left:38%;top: 10px">中国物料搬运蓝皮书数据采集平台</span>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- Messages: style can be found in dropdown.less-->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" th:title="'权限：'+(${session.user.level}==1? '管理员':'普通用户')"
+                           data-toggle="dropdown">
+                            <span class="hidden-xs">
+                                <b style="font-size: medium">[(${session.user.userName})]</b>，欢迎您！
+                            </span>
+                        </a>
+                    </li>
+                    <!-- Control Sidebar Toggle Button -->
+                    <li>
+                        <a id="logout" title="安全退出"><i class="fa fa-power-off"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" data-widget="tree">
+                <li class="header">导航菜单</li>
+                <li class="active treeview">
+                    <a href="#">
+                        <i class="fa fa-laptop"></i> <span>主页</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="active"><a th:href="@{/index}"><i class="fa fa-circle-o"></i> 系统概览</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-table"></i> <span>信息查看</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a th:href="@{/tables}"><i class="fa fa-circle-o"></i>企业查询</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-edit"></i> <span>信息采集</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a th:href="@{/collect}"><i class="fa fa-circle-o"></i>企业信息</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                主页
+                <small>系统概览</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a th:href="@{/index}"><i class="fa fa-dashboard"></i>主页</a></li>
+                <li class="active">系统概览</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <!-- Small boxes (Stat box) -->
+        <section class="content">
+            <div class="callout callout-success" style="height: 170px;background-color: paleturquoise !important;">
+                <h4 style="color: blue">主办单位：</h4>
+                <div class="col-md-12" style="height: 50px">
+                    <span class="col-md-3"><a href="https://www.cmes.org/" target="_blank"><img class="img-responsive"
+                                                                                                style="height: 50px;margin: 0 auto"
+                                                                                                src="images/1.png"
+                                                                                                alt=""></a></span>
+                    <span class="col-md-3"><a href="http://www.lei.org.cn/index.html" target="_blank"><img
+                            class="img-responsive" style="height: 42px;margin: 3px auto 0;" src="images/2.png"
+                            alt=""></a></span>
+                    <span class="col-md-3"><a href="https://www.tongji.edu.cn/" target="_blank"><img
+                            class="img-responsive" style="height: 56px;margin: 0 auto" src="images/3.png"
+                            alt=""></a></span>
+                    <span class="col-md-3"><a href="http://www.hacm.cn/" target="_blank"><img class="img-responsive"
+                                                                                              style="height: 56px;margin: 0 auto"
+                                                                                              src="images/4.png" alt=""></a></span>
+                </div>
+                <br><br><br>
+                <h4 style="color: blue">系统公告：</h4>
+                <div class="row">
+
+                <span style="margin-left: 2.5%;"><i class="fa  fa-hand-o-right" style="color: black"></i>
+                <a style="cursor: pointer;font-size: larger;color: orangered" th:href="@{/download4}">
+                    1.致辞：打造行业信息平台，共享合作发展成果
+                </a>
+                </span>
+
+                <span style="margin-left: 2.5%;"><i class="fa  fa-hand-o-right" style="color: black"></i>
+                <a style="cursor: pointer;font-size: larger;color: orangered" th:href="@{/download5}" >
+                    2.蓝皮书企业数据征集函
+                </a>
+                </span>
+
+                <span style="margin-left: 2.5%;"><i class="fa  fa-hand-o-right" style="color: black"></i>
+                <a style="cursor: pointer;font-size: larger;color: orangered" th:href="@{/download6}">
+                    3.信息报送真实性声明
+                </a>
+                </span>
+
+                <span style="margin-left: 2.5%;"><i class="fa  fa-hand-o-right" style="color: black"></i>
+                <a style="cursor: pointer;font-size: larger;color: orangered" th:href="@{/download7}">
+                    4.《起重运输机械》征稿函
+                </a>
+                </span>
+                </div>
+            </div>
+            <!-- Main row -->
+            <div class="row">
+                <div class="col-md-6">
+                    <!-- AREA CHART -->
+                    <div class="box box-primary">
+                        <div class="box-header with-border">
+                            <i class="fa fa-steam"></i>
+                            <h3 class="box-title">起重机械</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                        class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body chart-responsive">
+                            <div class="chart" style="height: 235px;">
+                                <h4 class="box-default">&nbsp;&nbsp;信息查看</h4>
+                                <ul style="font-size: 16px">
+                                    <li>
+                                        <a th:href="@{/tables1}">部分起重机械企业名单</a>
+                                    </li>
+                                    <li>
+                                        <a th:href="@{/tables2}">上海起重运输机械行业协会会员企业名单</a>
+                                    </li>
+                                </ul>
+                                <h4 class="box-default">&nbsp;&nbsp;信息采集</h4>
+                                <ul style="font-size: 16px">
+                                    <li>
+                                        <a th:href="@{/collect1}">数据采集——起重机械</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box -->
+
+                    <!-- DONUT CHART -->
+                    <div class="box box-danger">
+                        <div class="box-header with-border">
+                            <i class="fa fa-sliders"></i>
+                            <h3 class="box-title">输送机械</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                        class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body chart-responsive">
+                            <div class="chart" style="height: 235px; position: relative;">
+                                <h4 class="box-default">&nbsp;&nbsp;信息查看</h4>
+                                <ul style="font-size: 16px">
+                                    <li>
+                                        <a th:href="@{/index}">相关信息<small style="color: red">（暂无）</small></a>
+                                    </li>
+                                </ul>
+                                <h4 class="box-default">&nbsp;&nbsp;信息采集</h4>
+                                <ul style="font-size: 16px">
+                                    <li>
+                                        <a th:href="@{/collect3}">数据采集——输送机械</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- /.box -->
+
+                </div>
+                <!-- /.col (LEFT) -->
+                <div class="col-md-6">
+                    <!-- LINE CHART -->
+                    <div class="box box-info">
+                        <div class="box-header with-border">
+                            <i class="fa fa-cubes"></i>
+                            <h3 class="box-title">物流仓储</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                        class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body chart-responsive">
+                            <div class="chart" style="height: 235px;">
+                                <h4 class="box-default">&nbsp;&nbsp;信息查看</h4>
+                                <ul style="font-size: 16px">
+                                    <li>
+                                        <a th:href="@{/tables3}">国内物流仓储装备企业列表</a>
+                                    </li>
+                                    <li>
+                                        <a th:href="@{/tables4}">国内物流仓储装备上市企业列表</a>
+                                    </li>
+                                    <li>
+                                        <a th:href="@{/tables5}">国外物流仓储装备企业列表</a>
+                                    </li>
+                                </ul>
+                                <h4 class="box-default">&nbsp;&nbsp;信息采集</h4>
+                                <ul style="font-size: 16px">
+                                    <li>
+                                        <a th:href="@{/collect2}">数据采集——物流仓储</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+
+                    <!-- BAR CHART -->
+                    <div class="box box-success">
+                        <div class="box-header with-border">
+                            <i class="fa fa-truck"></i>
+                            <h3 class="box-title">工业车辆</h3>
+
+                            <div class="box-tools pull-right">
+                                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i
+                                        class="fa fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-box-tool" data-widget="remove"><i
+                                        class="fa fa-times"></i></button>
+                            </div>
+                        </div>
+                        <div class="box-body chart-responsive">
+                            <div class="chart" style="height: 235px;">
+                                <h4 class="box-default">&nbsp;&nbsp;信息查看</h4>
+                                <ul style="font-size: 16px">
+                                    <li>
+                                        <a th:href="@{/index}">相关信息<small style="color: red">（暂无）</small></a>
+                                    </li>
+                                </ul>
+                                <h4 class="box-default">&nbsp;&nbsp;信息采集</h4>
+                                <ul style="font-size: 16px">
+                                    <li>
+                                        <a th:href="@{/index}">数据采集——工业车辆<small style="color: red">（暂无）</small></a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!-- /.box-body -->
+                    </div>
+                    <!-- /.box -->
+                </div>
+                <!-- /.col (RIGHT) -->
+            </div>
+            <!-- /.row (main row) -->
+            <div class="row">
+                <!-- ./col -->
+                <div class="col-lg-4 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-red">
+                        <div class="inner">
+                            <h3>[(${loginCount})]<sup style="font-size:20px">&nbsp;次</sup></h3>
+                            <p>累计访问量</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-pie-graph"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-4 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-yellow">
+                        <div class="inner">
+                            <h3>[(${userSum})]<sup style="font-size: 20px">&nbsp;位</sup></h3>
+                            <p>系统用户数</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-person-add"></i>
+                        </div>
+                    </div>
+                </div>
+                <!-- ./col -->
+                <div class="col-lg-4 col-xs-6">
+                    <!-- small box -->
+                    <div class="small-box bg-blue">
+                        <div class="inner">
+                            <h3>[(${formSum})]<sup style="font-size: 20px">&nbsp;张</sup></h3>
+                            <p>有效信息表</p>
+                        </div>
+                        <div class="icon">
+                            <i class="ion ion-stats-bars"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer" style="text-align: center">
+        <strong>&copy; 2019-2020 版权所有 <a href="http://www.beian.miit.gov.cn"
+                                         target="_blank">皖ICP备19022408号-1</a></strong>
+    </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+<script th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script th:src="@{/bower_components/jquery-ui/jquery-ui.min.js}"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+    $.widget.bridge('uibutton', $.ui.button);
+</script>
+<!-- Bootstrap 3.3.7 -->
+<script th:src="@{/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
+<!-- Sparkline -->
+<script th:src="@{/bower_components/jquery-sparkline/dist/jquery.sparkline.min.js}"></script>
+<!-- jvectormap -->
+<script th:src="@{/plugins/jvectormap/jquery-jvectormap-1.2.2.min.js}"></script>
+<script th:src="@{/plugins/jvectormap/jquery-jvectormap-world-mill-en.js}"></script>
+<!-- jQuery Knob Chart -->
+<script th:src="@{/bower_components/jquery-knob/dist/jquery.knob.min.js}"></script>
+<!-- Slimscroll -->
+<script th:src="@{/bower_components/jquery-slimscroll/jquery.slimscroll.min.js}"></script>
+<!-- FastClick -->
+<script th:src="@{/bower_components/fastclick/lib/fastclick.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/dist/js/adminlte.min.js}"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script th:src="@{/dist/js/pages/dashboard.js}"></script>
+<!-- AdminLTE for demo purposes -->
+<script th:src="@{/dist/js/demo.js}"></script>
+<!--
+<script type="text/javascript">
+    function getLoginCount() {
+        $.ajax({
+            type: "GET",
+            url: "/book/getLoginCount",
+            dataType: "json",
+            success: function (count) {
+                $("#loginCount").html(count + "<sup style='font-size:20px'>&nbsp;次</sup>");
+            }
+        })
+    }
+</script>
+-->
+<script type="text/javascript">
+    $("#logout").click(function () {
+        if (confirm("确定退出？"))
+            window.location.href = "/book/logout";
+    })
+</script>
+</body>
+</html>

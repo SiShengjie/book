@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="icon" th:href="@{/images/favicon.ico}">
+    <title>MHDAP | 信息查看</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" th:href="@{/bower_components/bootstrap/dist/css/bootstrap.min.css}">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" th:href="@{/bower_components/font-awesome/css/font-awesome.min.css}">
+    <!-- Ionicons -->
+    <link rel="stylesheet" th:href="@{/bower_components/Ionicons/css/ionicons.min.css}">
+    <!-- Theme style -->
+    <link rel="stylesheet" th:href="@{dist/css/AdminLTE.min.css}">
+    <!-- AdminLTE Skins. Choose a skin from the css/skins
+         folder instead of downloading all of them to reduce the load. -->
+    <link rel="stylesheet" th:href="@{/dist/css/skins/_all-skins.min.css}">
+    <!-- jvectormap -->
+    <link rel="stylesheet" th:href="@{/bower_components/jvectormap/jquery-jvectormap.css}">
+    <!-- DataTables -->
+    <link rel="stylesheet" th:href="@{/bower_components/datatables.net-bs/css/dataTables.bootstrap.min.css}">
+</head>
+<body class="hold-transition skin-blue sidebar-mini fixed">
+<div class="wrapper">
+    <header class="main-header">
+        <!-- Logo -->
+        <a th:href="@{/index}" class="logo">
+            <!-- logo for regular state and mobile devices -->
+            <span class="logo-lg">MHDAP</span>
+        </a>
+        <!-- Header Navbar: style can be found in header.less -->
+        <nav class="navbar navbar-static-top">
+            <!-- Sidebar toggle button-->
+            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
+                <span class="sr-only">Toggle navigation</span>
+            </a>
+            <span style="font-size: 20px;color: white;position: relative;left:38%;top: 10px">中国物料搬运蓝皮书数据采集平台</span>
+            <div class="navbar-custom-menu">
+                <ul class="nav navbar-nav">
+                    <!-- Messages: style can be found in dropdown.less-->
+                    <li class="dropdown user user-menu">
+                        <a href="#" class="dropdown-toggle" th:title="'权限：'+(${session.user.level}==1? '管理员':'普通用户')"
+                           data-toggle="dropdown">
+                            <span class="hidden-xs"><b
+                                    style="font-size: medium">[(${session.user.userName})]</b>，欢迎您！</span>
+                        </a>
+                    </li>
+                    <!-- Control Sidebar Toggle Button -->
+                    <li>
+                        <a id="logout" title="安全退出"><i class="fa fa-power-off"></i></a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <!-- Left side column. contains the logo and sidebar -->
+    <aside class="main-sidebar">
+        <!-- sidebar: style can be found in sidebar.less -->
+        <section class="sidebar">
+            <!-- sidebar menu: : style can be found in sidebar.less -->
+            <ul class="sidebar-menu" data-widget="tree">
+                <li class="header">导航菜单</li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-laptop"></i> <span>主页</span>
+                        <span class="pull-right-container">
+                            <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a th:href="@{/index}"><i class="fa fa-circle-o"></i> 系统概览</a></li>
+                    </ul>
+                </li>
+                <li class="active treeview">
+                    <a href="#">
+                        <i class="fa fa-table"></i> <span>信息查看</span>
+                        <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li class="active"><a th:href="@{/tables}"><i class="fa fa-circle-o"></i>企业查询</a></li>
+                    </ul>
+                </li>
+                <li class="treeview">
+                    <a href="#">
+                        <i class="fa fa-edit"></i> <span>信息采集</span>
+                        <span class="pull-right-container">
+                        <i class="fa fa-angle-left pull-right"></i>
+                        </span>
+                    </a>
+                    <ul class="treeview-menu">
+                        <li><a th:href="@{/collect}"><i class="fa fa-circle-o"></i>企业信息</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </section>
+        <!-- /.sidebar -->
+    </aside>
+
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+        <!-- Content Header (Page header) -->
+        <section class="content-header">
+            <h1>
+                信息查看
+                <small>企业查询</small>
+            </h1>
+            <ol class="breadcrumb">
+                <li><a href="#"><i class="fa fa-dashboard"></i>信息查看</a></li>
+                <li class="active">企业查询</li>
+            </ol>
+        </section>
+
+        <!-- Main content -->
+        <section class="content">
+            <!-- Small boxes (Stat box) -->
+            <!--            <h3 th:class="(${session.user.level}==0? 'show':'hidden')">为保护用户及企业信息，该模块仅对“管理员”开放。</h3>-->
+            <!--            <div th:class="(${session.user.level}==1? 'show':'hidden')">-->
+            <div>
+                <div th:class="(${tableLevel==0||tableId==1}? 'show box':'hidden')">
+                    <div class="box-header">
+                        <i class="fa fa-steam"></i>
+                        <h3 class="box-title">部分起重机械企业列表</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="list1" class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>企业名称</th>
+                                <th>网址</th>
+                                <th>地址</th>
+                                <!--                                <th>产品</th>-->
+                                <th>电话</th>
+                                <!--                                <th>操作</th>-->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="enterprise:${allEnterprise}">
+                                <td th:text="${enterprise.id}"></td>
+                                <td th:text="${enterprise.name}"></td>
+                                <td><a th:href="@{'https://'+${enterprise.url}}" th:text="${enterprise.url}"
+                                       target="_blank"></a></td>
+                                <td th:text="${enterprise.addr}"></td>
+                                <!--                                <td th:text="${enterprise.product}"></td>-->
+                                <td th:text="${enterprise.tel}"></td>
+                                <!--                                <td><a class="btn btn-xs btn-info" th:href="@{'/collect_'+${enterprise.name}}"><i class="fa fa-edit"></i>&nbsp;填写表单</a></td>-->
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div>
+                <div th:class="(${tableLevel==0||tableId==2}? 'show box':'hidden')">
+                    <div class="box-header">
+                        <i class="fa fa-steam"></i>
+                        <h3 class="box-title">上海起重运输机械行业协会下企业列表</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="list2" class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>企业名称</th>
+                                <th>统一社会代码</th>
+                                <th>类别</th>
+                                <th>协会职务</th>
+                                <th>类型</th>
+                                <th>成立时间</th>
+                                <th>地址</th>
+                                <!--                                <th>产品</th>-->
+                                <!--                                <th>操作</th>-->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="vip:${allVip}">
+                                <td th:text="${vip.id}"></td>
+                                <td th:text="${vip.name}"></td>
+                                <td th:text="${vip.code}"></td>
+                                <td th:text="${vip.category}"></td>
+                                <td th:text="${vip.status}"></td>
+                                <td th:text="${vip.kind}"></td>
+                                <td th:text="${vip.found}"></td>
+                                <td th:text="${vip.addr}"></td>
+                                <!--                                <td><a class="btn btn-xs btn-info" th:href="@{'/collect_'+${vip.name}}"><i class="fa fa-edit"></i>&nbsp;填写表单</a></td>-->
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div>
+                <div th:class="(${tableLevel==0||tableId==3}? 'show box':'hidden')">
+                    <div class="box-header">
+                        <i class="fa fa-cubes"></i>
+                        <h3 class="box-title">国内物流仓储装备企业列表</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="list3" class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>企业名称</th>
+                                <th>公司类别</th>
+                                <th>网址</th>
+                                <th>地址</th>
+                                <th>城市</th>
+                                <th>省份</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="inside:${allInside}">
+                                <td th:text="${inside.id}"></td>
+                                <td th:text="${inside.name}"></td>
+                                <td th:text="${inside.category}"></td>
+                                <td><a th:href="@{'https://'+${inside.url}}" th:text="${inside.url}"
+                                       target="_blank"></a></td>
+                                <td th:text="${inside.addr}"></td>
+                                <td th:text="${inside.city}"></td>
+                                <td th:text="${inside.province}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div>
+                <div th:class="(${tableLevel==0||tableId==4}? 'show box':'hidden')">
+                    <div class="box-header">
+                        <i class="fa fa-cubes"></i>
+                        <h3 class="box-title">国内物流仓储装备上市企业列表</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="list4" class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>企业名称</th>
+                                <th>公司类别</th>
+                                <th>网址</th>
+                                <th>地址</th>
+                                <th>城市</th>
+                                <th>省份</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="market:${allMarket}">
+                                <td th:text="${market.id}"></td>
+                                <td th:text="${market.name}"></td>
+                                <td th:text="${market.category}"></td>
+                                <td><a th:href="@{'https://'+${market.url}}" th:text="${market.url}"
+                                       target="_blank"></a></td>
+                                <td th:text="${market.addr}"></td>
+                                <td th:text="${market.city}"></td>
+                                <td th:text="${market.pro}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+            <div>
+                <div th:class="(${tableLevel==0||tableId==5}? 'show box':'hidden')">
+                    <div class="box-header">
+                        <i class="fa fa-cubes"></i>
+                        <h3 class="box-title">国外物流仓储装备企业列表</h3>
+                    </div>
+                    <!-- /.box-header -->
+                    <div class="box-body">
+                        <table id="list5" class="table table-bordered table-striped">
+                            <thead>
+                            <tr>
+                                <th>编号</th>
+                                <th>企业名称</th>
+                                <th>公司类别</th>
+                                <th>网址</th>
+                                <th>地址</th>
+                                <th>城市</th>
+                                <th>国家</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="abroad:${allAbroad}">
+                                <td th:text="${abroad.id}"></td>
+                                <td th:text="${abroad.name}"></td>
+                                <td th:text="${abroad.category}"></td>
+                                <td><a th:href="@{'https://'+${abroad.url}}" th:text="${abroad.url}"
+                                       target="_blank"></a></td>
+                                <td th:text="${abroad.addr}"></td>
+                                <td th:text="${abroad.city}"></td>
+                                <td th:text="${abroad.country}"></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- /.box-body -->
+                </div>
+            </div>
+
+            <!-- /.row -->
+            <!-- Main row -->
+            <!-- /.row (main row) -->
+
+        </section>
+        <!-- /.content -->
+    </div>
+    <!-- /.content-wrapper -->
+    <footer class="main-footer" style="text-align: center">
+        <strong>&copy; 2019-2020 版权所有 <a href="http://www.beian.miit.gov.cn"
+                                         target="_blank">皖ICP备19022408号-1</a></strong>
+    </footer>
+</div>
+<!-- ./wrapper -->
+
+<!-- jQuery 3 -->
+<script th:src="@{/bower_components/jquery/dist/jquery.min.js}"></script>
+<!-- jQuery UI 1.11.4 -->
+<script th:src="@{/bower_components/jquery-ui/jquery-ui.min.js}"></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+<script>
+    $.widget.bridge('uibutton', $.ui.button);
+</script>
+<!-- Bootstrap 3.3.7 -->
+<script th:src="@{/bower_components/bootstrap/dist/js/bootstrap.min.js}"></script>
+<!-- DataTables -->
+<script th:src="@{/bower_components/datatables.net/js/jquery.dataTables.min.js}"></script>
+<script th:src="@{/bower_components/datatables.net-bs/js/dataTables.bootstrap.min.js}"></script>
+<!-- Slimscroll -->
+<script th:src="@{/bower_components/jquery-slimscroll/jquery.slimscroll.min.js}"></script>
+<!-- FastClick -->
+<script th:src="@{/bower_components/fastclick/lib/fastclick.js}"></script>
+<!-- AdminLTE App -->
+<script th:src="@{/dist/js/adminlte.min.js}"></script>
+<!-- AdminLTE dashboard demo (This is only for demo purposes) -->
+<script th:src="@{/dist/js/pages/dashboard.js}"></script>
+<!-- AdminLTE for demo purposes -->
+<script th:src="@{/dist/js/demo.js}"></script>
+<!-- page script -->
+<script>
+    $(function () {
+        $('#list1,#list2,#list3,#list4,#list5').DataTable({
+            oLanguage: {
+                sProcessing: "处理中...",
+                sLengthMenu: "每页显示 _MENU_ 条记录",
+                sSearch: "搜索：",
+                sZeroRecords: "抱歉，无匹配结果",
+                sInfo: "显示第 _START_ 至 _END_ 项， 共 _TOTAL_ 条数据",
+                sInfoEmpty: "没有数据",
+                sEmptyTable: "表中数据为空",
+                sLoadingRecords: "载入中...",
+                sInfoFiltered: "(从 _MAX_ 条数据中过滤)",
+                oPaginate: {
+                    sFirst: "首页",
+                    sPrevious: "上页",
+                    sNext: "下页",
+                    sLast: "尾页"
+                }
+            }
+        })
+        // $('#example2').DataTable({
+        //     'paging'      : true,
+        //     'lengthChange': false,
+        //     'searching'   : false,
+        //     'ordering'    : true,
+        //     'info'        : true,
+        //     'autoWidth'   : false
+        // })
+        $("#logout").click(function () {
+            if (confirm("确定退出？"))
+                window.location.href = "/book/logout";
+        })
+    })
+</script>
+</body>
+</html>
